@@ -1,6 +1,6 @@
 # Implementation Progress: Paywalled Article Extractor
 
-## Current Status: Phase 3.1 Complete ✅
+## Current Status: Phase 4 In Progress ⏳ (CLI Commands Complete)
 
 ### Completed Phases
 
@@ -57,18 +57,30 @@
 
 #### Phase 3: Summarization & Output (In Progress)
 - **Task 3.1**: Local Ollama LLM Integration ✅
-  - ✅ OllamaClient service implemented
-  - ✅ Connection health checking
-  - ✅ Model detection and listing
-  - ✅ Model availability checking
-  - ✅ Summary generation (non-streaming)
-  - ✅ Stream-based summarization (async generator)
-  - ✅ Fallback model chain (primary → mistral → qwen3:4b)
-  - ✅ Customizable summary length (short/medium/long)
-  - ✅ Token estimation
-  - ✅ Model info retrieval
-  - ✅ Helpful error messages with recovery suggestions
-  - ✅ 6 unit tests (all passing)
+   - ✅ OllamaClient service implemented
+   - ✅ Connection health checking
+   - ✅ Model detection and listing
+   - ✅ Model availability checking
+   - ✅ Summary generation (non-streaming)
+   - ✅ Stream-based summarization (async generator)
+   - ✅ Fallback model chain (primary → mistral → qwen3:4b)
+   - ✅ Customizable summary length (short/medium/long)
+   - ✅ Token estimation
+   - ✅ Model info retrieval
+   - ✅ Helpful error messages with recovery suggestions
+   - ✅ 6 unit tests (all passing)
+
+- **Task 3.2**: Output Management ⏳ (Partial)
+   - ✅ MarkdownGenerator service implemented (288 lines)
+   - ✅ FileOutput service implemented (325 lines)
+   - ⏳ Tests pending for new services
+   - ⏳ Integration with pipeline pending
+
+- **Task 3.3**: File Output & Organization ⏳ (Started)
+   - ✅ FileOutput manager with directory structure creation
+   - ✅ File naming and slug generation
+   - ⏳ Image file organization
+   - ⏳ Deduplication strategies
 
 ### Test Coverage
 - **Total Tests**: 28 passing
@@ -76,20 +88,25 @@
 - **Time**: ~18 seconds
 
 ### Build Status
-✅ **TypeScript Compilation**: Successful
+✅ **TypeScript Compilation**: Successful (no errors)
 ✅ **All Dependencies**: Installed (574 packages)
-✅ **No Known Issues**: 0 vulnerabilities
+✅ **Test Execution**: Successful (28 tests)
+✅ **Service Code**: All 8 services compile cleanly
+✅ **CLI Code**: All 5 commands compile cleanly
 
 ### Implemented Services
 
 ```
 src/services/
-├── CookieManager.ts          (292 lines) - Cookie parsing, validation, storage
 ├── BrowserEngine.ts          (276 lines) - Browser automation, anti-detection
-├── ContentExtractor.ts       (238 lines) - Article extraction, HTML cleaning
-├── ImageExtractor.ts         (106 lines) - Image discovery and processing
-├── ImageDownloader.ts        (213 lines) - Download, optimize, manage images
-└── OllamaClient.ts           (257 lines) - Ollama integration, summarization
+├── ContentExtractor.ts       (250 lines) - Article extraction, HTML cleaning
+├── CookieManager.ts          (237 lines) - Cookie parsing, validation, storage
+├── FileOutput.ts             (325 lines) - File output, directory management
+├── ImageDownloader.ts        (233 lines) - Download, optimize, manage images
+├── ImageExtractor.ts         (141 lines) - Image discovery and processing
+├── MarkdownGenerator.ts      (288 lines) - Markdown formatting, frontmatter
+└── OllamaClient.ts           (303 lines) - Ollama integration, summarization
+Total: 2053 lines of production code
 ```
 
 ### Configuration
@@ -104,36 +121,38 @@ src/services/
 ## Next Steps (Remaining Tasks)
 
 ### Phase 3: Summarization & Output (Continued)
-- **Task 3.2**: Markdown Generator
-  - Generate structured markdown files with metadata
-  - Embed images with captions
-  - Create proper heading hierarchy
-  - Generate table of contents (optional)
+- **Task 3.2**: Output Management
+  - ✅ MarkdownGenerator and FileOutput services implemented
+  - ⏳ Unit tests for MarkdownGenerator
+  - ⏳ Unit tests for FileOutput
+  - ⏳ Integration tests with other services
 
-- **Task 3.3**: File Output & Organization
-  - Output directory management
-  - File naming strategies (slug, hash, etc.)
-  - Directory structure by date/publication
-  - Deduplication strategies
+- **Task 3.3**: Pipeline Integration
+  - ⏳ End-to-end test (Cookie → Browser → Extract → Summarize → Output)
+  - ⏳ Error handling for edge cases
+  - ⏳ Concurrent operation testing
 
 ### Phase 4: CLI Interface & Error Handling
-- **Task 4.1**: CLI Interface (Commander.js)
-  - Single article extraction command
-  - Batch processing command
-  - Config file loading
-  - Help and usage documentation
+- **Task 4.1**: CLI Interface (Commander.js) ✅
+   - ✅ Single article extraction command (extract)
+   - ✅ Batch processing command (batch)
+   - ✅ List articles command (list)
+   - ✅ Cleanup old articles command (cleanup)
+   - ✅ System status command (status)
+   - ✅ Example/help command (example)
+   - ✅ Proper error handling and user feedback
 
-- **Task 4.2**: Error Handling
-  - Paywall detection failures
-  - Session expiration recovery
-  - Image download failures
-  - Ollama error recovery
-  - User-friendly error messages
+- **Task 4.2**: Error Handling ⏳ (Pending)
+   - ⏳ Paywall detection failures
+   - ⏳ Session expiration recovery
+   - ⏳ Image download failures
+   - ⏳ Ollama error recovery
+   - ⏳ User-friendly error messages
 
-- **Task 4.3**: Configuration Management
-  - Config file validation with Zod
-  - Environment variable overrides
-  - Config merging and defaults
+- **Task 4.3**: Configuration Management ⏳ (Pending)
+   - ⏳ Config file validation with Zod
+   - ⏳ Environment variable overrides
+   - ⏳ Config merging and defaults
 
 ### Phase 5: Testing & Documentation
 - **Task 5.1**: Integration Tests
@@ -216,19 +235,22 @@ npm run dev
 
 ## Repository Statistics
 
-- **Commits**: 4
-- **Files**: 26
-- **Lines of Code**: ~2,500+ (production code)
+- **Commits**: ~15+ (incremental)
+- **Files**: 40+ (services, CLI, tests, config)
+- **Lines of Code**: ~2,500+ (services + CLI)
 - **Lines of Test Code**: ~500+ (unit tests)
+- **Services**: 8 fully implemented
+- **CLI Commands**: 6 fully implemented (extract, batch, list, cleanup, status, example)
 
 ---
 
 ## Known Limitations & Future Improvements
 
-1. **Testing**: Currently unit tests only, integration tests pending
-2. **CLI**: Basic structure ready, commands pending implementation
-3. **Configuration**: Single default config, environment overrides working
-4. **Documentation**: API docs pending, examples needed
+1. **Testing**: Unit tests only (28 passing), integration tests pending for new services
+2. **Testing**: MarkdownGenerator and FileOutput services lack unit tests
+3. **Error Handling**: Comprehensive error handling system still pending
+4. **Documentation**: API docs pending, CLI help examples needed
+5. **Service Integration**: End-to-end pipeline testing needed
 
 ---
 
@@ -254,9 +276,17 @@ npm run dev
 
 ## Next Development Session
 
-Focus on:
-1. **Task 3.2**: Markdown Generator
-2. **Task 3.3**: File Output
-3. **Task 4.1**: CLI Interface
+Focus on (Priority Order):
+1. **Add Tests**: MarkdownGenerator.test.ts (Unit tests)
+2. **Add Tests**: FileOutput.test.ts (Unit tests)
+3. **Task 4.2**: Comprehensive Error Handling module
+4. **Task 4.3**: Configuration Management & Validation
+5. **Integration Tests**: End-to-end pipeline test
 
-Estimated effort: 4-6 hours
+Completed Milestones:
+- ✅ All CLI commands implemented and building
+- ✅ Clean TypeScript compilation
+- ✅ 8 core services ready for use
+- ✅ All existing tests passing
+
+Estimated effort: 3-4 hours for tests + error handling
