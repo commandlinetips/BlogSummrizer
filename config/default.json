@@ -1,0 +1,38 @@
+{
+  "browser": {
+    "timeout": 30000,
+    "headless": true,
+    "antiDetection": true,
+    "retries": 3
+  },
+  "llm": {
+    "type": "ollama",
+    "baseUrl": "http://localhost:11434",
+    "primaryModel": "llama3.1",
+    "fallbackModels": ["mistral", "qwen3:4b"],
+    "summaryLength": "medium",
+    "temperature": 0.5,
+    "timeout": 120000,
+    "streaming": true,
+    "caching": true,
+    "cacheDir": "./cache/summaries"
+  },
+  "images": {
+    "maxWidth": 1200,
+    "quality": 80,
+    "maxConcurrent": 5,
+    "timeout": 10000
+  },
+  "output": {
+    "baseDir": "./output/articles",
+    "structure": "date/publication",
+    "naming": "slug",
+    "createSubfolders": true,
+    "deduplication": "url-hash"
+  },
+  "logging": {
+    "level": "info",
+    "format": "text",
+    "file": "./logs/app.log"
+  }
+}
