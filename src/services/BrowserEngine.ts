@@ -113,6 +113,9 @@ export class BrowserEngine {
       'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
     });
 
+    // Enable request interception first
+    await page.setRequestInterception(true);
+
     // Block trackers and ads
     await page.on('request', request => {
       const resourceType = request.resourceType();

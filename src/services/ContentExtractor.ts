@@ -181,7 +181,7 @@ export class ContentExtractor {
       },
     });
 
-    // Add rule for images
+    // Add rule for images (keep web URLs for now, will be replaced later)
     turndownService.addRule('images', {
       filter: 'img',
       replacement: (_content: string, node: any) => {
@@ -192,6 +192,34 @@ export class ContentExtractor {
     });
 
     return turndownService.turndown(html).trim();
+  }
+
+  /**
+   * Replace image URLs in markdown with local paths
+   */
+  static replaceImageUrls(markdown: string, images: Array<{ src: string; relativePath: string }>): string {
+    let result = markdown;
+    
+    for (const image of images) {
+      // Replace web URL with local path
+      const webUrl = image.src;
+      const localPath = `./images/${image.relativePath.split('/').pop()}`;
+      
+      // Replace in markdown image syntax: ![alt](url)
+      result = result.replace(
+        new RegExp(`!\\[([^\\]]*)\\]\\(${this.escapeRegex(webUrl)}\\)`, 'g'),
+        `![$1](${localPath})`
+      );
+    }
+    
+    return result;
+  }
+
+  /**
+   * Escape special regex characters
+   */
+  private static escapeRegex(str: string): string {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
   /**

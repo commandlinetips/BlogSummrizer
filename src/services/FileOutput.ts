@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { config } from '../config/index.js';
-import { ArticleMetadata } from './ContentExtractor.js';
+import { ArticleMetadata, ContentExtractor } from './ContentExtractor.js';
 import { LocalImage } from './ImageDownloader.js';
 import { MarkdownGenerator } from './MarkdownGenerator.js';
 
@@ -84,8 +84,14 @@ export class FileOutput {
     const filename = this.generateUniqueFilename(outputDir, baseFilename);
     const filePath = path.join(outputDir, filename);
 
+    // Replace image URLs in markdown with local paths
+    let processedMarkdown = markdown;
+    if (images.length > 0) {
+      processedMarkdown = ContentExtractor.replaceImageUrls(markdown, images);
+    }
+
     // Generate markdown content with images
-    const content = MarkdownGenerator.generateOriginalArticle(metadata, markdown, images, {
+    const content = MarkdownGenerator.generateOriginalArticle(metadata, processedMarkdown, images, {
       includeImages: true,
       includeMetadata: true,
       imageBasePath: './images',
